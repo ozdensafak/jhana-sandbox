@@ -79,9 +79,7 @@ jhana_ai/
 ├── notebooks/
 │   ├── 01_jhana_testing.ipynb
 |   └── 02_jhana_pipeline.ipynb
-│
-├── src/
-├── tests/
+|
 ├── README.md
 └── requirements.txt
 ```
