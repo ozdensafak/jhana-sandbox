@@ -50,7 +50,11 @@ curl -fsSL https://ollama.com/install.sh | sh
 Download the necessary models:
 
 - **Whisper**: Follow instructions from OpenAI's [GitHub](https://github.com/openai/whisper) to download `whisper-small`.
-- **TTS**: XTTS-v2 can be installed as part of the Python dependencies listed in `requirements.txt`.
+- **TTS**: XTTS-v2 can be installed as part of the Python dependencies listed in `requirements.txt`. Test TTS in the terminal using the following command:
+
+```bash
+python -m tts --text "Hello, world!" --output-file "hello_world.wav" --model_name "tts_models/multilingual/multi-dataset/xtts_v2"
+```
 - **Ollama**: After installing Ollama, run the following to set up Mixtral:
 
 ```bash

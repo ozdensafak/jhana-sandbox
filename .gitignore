@@ -13,8 +13,12 @@ venv/
 # Jupyter notebooks checkpoints
 .ipynb_checkpoints/
 
+# Jupyter notebook sandbox
+notebooks/00_jhana_sandbox.ipynb
+
 # Data directories
-data/input/
+data/input/audio/guided_meditations/
+data/input/audio/speech_to_transcribe/
 data/output/
 
 # Models directory
