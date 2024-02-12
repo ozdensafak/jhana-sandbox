@@ -1,0 +1,21 @@
+# General
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.idea/
+.DS_Store
+*.swp
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# Data directories
+data/input/
+data/output/
+
+# Models directory
+models/
