@@ -69,7 +69,9 @@ jhana_ai/
 ├── data/
 │   ├── input/
 │   │   └── audio/
-│   │       └── speech_to_transcribe/
+|   |       ├── speech_to_transcribe/
+│   │       └── voices_to_clone/audio_cf_10_seconds.wav
+|   |   
 │   └── output/
 │       ├── audio/
 │       └── text/
