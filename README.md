@@ -91,3 +91,7 @@ jhana_ai/
 4. **Generate Response**: The response from Mixtral is printed to the console and saved in `data/output/text/`.
 5. **Text-to-Speech**: Converts the Mixtral response into speech using XTTS-v2.
 6. **Save and Play Speech**: The generated speech is saved in `data/output/audio/` and then played back to the user.
+
+### Getting Started
+
+To run the basic pipeline, run the `02_jhana_pipeline.py` Jupyter notebook.
