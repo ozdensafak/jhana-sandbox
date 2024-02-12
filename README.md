@@ -77,7 +77,8 @@ jhana_ai/
 │       └── text/
 │
 ├── notebooks/
-│   └── 01_jhana_testing.ipynb
+│   ├── 01_jhana_testing.ipynb
+|   └── 02_jhana_pipeline.ipynb
 │
 ├── src/
 ├── tests/
@@ -96,4 +97,4 @@ jhana_ai/
 
 ### Getting Started
 
-To run the basic pipeline, run the `02_jhana_pipeline.py` Jupyter notebook.
+To run the basic pipeline, run the `02_jhana_pipeline.py` Jupyter notebook in `notebooks`.
