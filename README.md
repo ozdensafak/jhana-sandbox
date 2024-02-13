@@ -97,4 +97,4 @@ jhana_ai/
 
 To run the basic pipeline, run the `02_pipeline.py` Jupyter notebook in `notebooks`.
 
-Please not the `src/main.py` file runs too slowly at the moment.
+Please note the `src/main.py` file runs too slowly at the moment.
