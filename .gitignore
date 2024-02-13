@@ -14,8 +14,7 @@ venv/
 .ipynb_checkpoints/
 
 # Jupyter notebook sandbox
-notebooks/00_jhana_sandbox.ipynb
-notebooks/00_jhana_sandbox_00.ipynb
+notebooks/00_sandbox.ipynb
 sandbox/
 
 # Data directories
