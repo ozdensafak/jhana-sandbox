@@ -95,4 +95,6 @@ jhana_ai/
 
 ### Getting Started
 
-To run the basic pipeline, run the `02_jhana_pipeline.py` Jupyter notebook in `notebooks`.
+To run the basic pipeline, run the `02_pipeline.py` Jupyter notebook in `notebooks`.
+
+Please not the `src/main.py` file runs too slowly at the moment.
