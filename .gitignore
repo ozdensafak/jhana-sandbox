@@ -27,6 +27,7 @@ data/*
 data/input/audio/guided_meditations/
 data/input/audio/speech_to_transcribe/
 data/input/text/
+data/input/text_transcribed/
 data/output/
 data/raw/*
 
