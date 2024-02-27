@@ -1,61 +1,75 @@
 import os
+import asyncio
 import numpy as np
 import sounddevice as sd
 from scipy.io.wavfile import write
 import whisper
-import ollama
 import torch
-from TTS.api import TTS
-import subprocess  # Import subprocess to use aplay
+import torchaudio
+from TTS.tts.configs.xtts_config import XttsConfig
+from TTS.tts.models.xtts import Xtts
+import ollama
+print(torch.version.cuda)
 
-# Function to record audio
-def record_audio(duration=5, fs=44100):
-    print(f"Recording for {duration} seconds...")
+# Load Whisper model
+device = "cuda" if torch.cuda.is_available() else "cpu"
+whisper_model = whisper.load_model("small", device=device)
+
+# Function to record audio asynchronously
+async def record_audio_async(duration=5, fs=44100):
+    print("Please start speaking now...")
     recording = sd.rec(int(duration * fs), samplerate=fs, channels=2, dtype='float64')
-    sd.wait()  # Wait until recording is finished
-    recording = np.int16(recording / np.max(np.abs(recording)) * 32767)  # Convert to int16
+    await asyncio.sleep(duration)
+    print("Recording complete.")
+    recording = np.int16(recording / np.max(np.abs(recording)) * 32767)
     return recording, fs
 
-# Record audio
-output_directory = "../data/input/audio/speech_to_transcribe"
-os.makedirs(output_directory, exist_ok=True)
-audio, fs = record_audio(duration=5)
-audio_file_path = os.path.join(output_directory, "my_voice_recording.wav")
-write(audio_file_path, fs, audio)
-print(f"Recording saved to {audio_file_path}")
+async def transcribe_audio_async(audio_file_path):
+    result = whisper_model.transcribe(audio_file_path, language="en")
+    if device == "cuda":
+        torch.cuda.empty_cache()
+    return result["text"]
 
-# Convert speech to text
-model = whisper.load_model("small")
-result = model.transcribe(audio_file_path, language="en")
-transcribed_text = result["text"]
-print("Transcribed text:", transcribed_text)
+async def chat_with_ollama_async(transcribed_text):
+    ollama_response = ollama.chat(model='mixtral:8x7b-instruct-v0.1-q4_0', messages=[{'role': 'user', 'content': transcribed_text}])
+    return ollama_response['message']['content']
 
-# Chat with Ollama
-ollama_response = ollama.chat(model='mixtral:8x7b-instruct-v0.1-q4_0', messages=[{'role': 'user', 'content': transcribed_text}])
-ollama_text = ollama_response['message']['content']
-print("Ollama response:", ollama_text)
+async def stream_audio_response(text):
+    print("Loading XTTS model...")
+    config = XttsConfig()
+    config.load_json("/home/solaris/.local/share/tts/tts_models--multilingual--multi-dataset--xtts_v2/config.json")
+    model = Xtts.init_from_config(config)
+    model.load_checkpoint(config, checkpoint_dir="/home/solaris/.local/share/tts/tts_models--multilingual--multi-dataset--xtts_v2/", use_deepspeed=True)
+    model.cuda()
 
-# Save Ollama's response as text
-output_text_directory = "../data/output/text/"
-os.makedirs(output_text_directory, exist_ok=True)
-text_file_path = os.path.join(output_text_directory, "ollama_response.txt")
-with open(text_file_path, "w") as text_file:
-    text_file.write(ollama_text)
-print(f"Ollama's response saved to {text_file_path}")
+    print("Computing speaker latents...")
+    gpt_cond_latent, speaker_embedding = model.get_conditioning_latents(audio_path=["reference.wav"])
 
-# Convert Ollama's response to speech
-device = "cpu"  # Force the operation to use the CPU to avoid CUDA memory issues
-tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)  # Adjust model as needed
-output_audio_directory = "../data/output/audio/"
-os.makedirs(output_audio_directory, exist_ok=True)
-output_file_path = os.path.join(output_audio_directory, "ollama_response.wav")
-tts.tts_to_file(text=ollama_text, file_path=output_file_path, language="en", speaker_wav="../data/input/audio/voices_to_clone/audio_cf_10_seconds.wav")
-print(f"Text-to-speech audio saved to {output_file_path}")
+    print("Streaming inference...")
+    chunks = model.inference_stream(text, "en", gpt_cond_latent, speaker_embedding)
 
-# Play the generated speech using aplay
-if os.path.exists(output_file_path):
-    subprocess.run(["aplay", output_file_path])
-else:
-    print("Audio file not found.")
+    for i, chunk in enumerate(chunks):
+        print(f"Streaming chunk {i} of audio length {chunk.shape[-1]}")
+        sd.play(chunk.cpu().numpy(), 24000)
+        sd.wait()
 
- 
+async def main():
+    output_directory = "../data/input/audio/speech_to_transcribe"
+    os.makedirs(output_directory, exist_ok=True)
+    
+    audio, fs = await record_audio_async(duration=5)
+    audio_file_path = os.path.join(output_directory, "my_voice_recording.wav")
+    write(audio_file_path, fs, audio)
+    print(f"Recording saved to {audio_file_path}")
+
+    transcribed_text = await transcribe_audio_async(audio_file_path)
+    print("Transcribed text:", transcribed_text)
+
+    ollama_response = await chat_with_ollama_async(transcribed_text)
+    print("Ollama response:", ollama_response)
+
+    await stream_audio_response(ollama_response)
+
+if __name__ == "__main__":
+    asyncio.run(main())
+
