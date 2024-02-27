@@ -18,12 +18,24 @@ notebooks/00_sandbox.ipynb
 sandbox/
 
 # Data directories
+data/*
+# Except for the voices_to_clone directory
+!data/input/audio/voices_to_clone
+
+# Excluding specific files in voices_to_clone, as per your original .gitignore
+!data/input/audio/voices_to_clone/audio_cf_10_seconds.wav
 data/input/audio/guided_meditations/
 data/input/audio/speech_to_transcribe/
-data/input/audio/voices_to_clone/audio_tnh.mp3
-data/input/audio/voices_to_clone/cloned_voice.wav
 data/input/text/
 data/output/
+data/raw/*
 
 # Models directory
-models/
+models/*
+notebooks/checkpoint-*
+notebooks/runs
+
+# Additional notebook exclusions
+notebooks/00_sandbox.ipynb
+sandbox/
+
