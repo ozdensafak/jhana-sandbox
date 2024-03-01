@@ -1,6 +1,10 @@
-# Jhana AI
+# Jhana AI Sandbox
 
-Jhana AI is a voice assistant meditation coach designed to guide users through meditation sessions using advanced AI techniques. It listens to user queries, provides meditative guidance, and supports users in their meditation journey.
+Jhana AI is a voice assistant meditation coach designed to guide users through meditation sessions using advanced AI techniques. Jhana listens to user queries, provides meditative guidance, and supports users in their meditation journey.
+
+This repository is a development sandbox for Jhana AI, where we curate the dataset used to train the model, experiment with the pipeline, and try out different language models to build the best possible meditation coach.
+
+Please note that the datasets and models used in this repository are for research and development purposes only. The notebooks may not work correctly, because the datasets are not included in the repository. The models are not included either, and the code may not work without the necessary models.
 
 ## Features
 
@@ -29,8 +33,8 @@ sudo apt install ffmpeg portaudio19-dev
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/carecodeconnect/jhana_ai
-cd jhana_ai
+git clone https://github.com/carecodeconnect/jhana-sandbox.git
+cd jhana-sandbox
 ```
 
 2. Install Python dependencies:
@@ -50,7 +54,7 @@ curl -fsSL https://ollama.com/install.sh | sh
 Download the necessary models:
 
 - **Whisper**: Follow instructions from OpenAI's [GitHub](https://github.com/openai/whisper) to download `whisper-small`.
-- **TTS**: XTTS-v2 can be installed as part of the Python dependencies listed in `requirements.txt`. Test TTS in the terminal using the following command:
+- **TTS**: XTTS-v2 can be installed as part of the Python dependencies listed in `requirements.txt`. Test `TTS` in the terminal using the following command:
 
 ```bash
 python -m tts --text "Hello, world!" --output-file "hello_world.wav" --model_name "tts_models/multilingual/multi-dataset/xtts_v2"
@@ -64,22 +68,16 @@ ollama run mixtral:8x7b-instruct-v0.1-q4_0
 ### Folder Structure
 
 ```
-jhana_ai/
-│
 ├── data/
-│   ├── input/
-│   │   └── audio/
-|   |       ├── speech_to_transcribe/
-│   │       └── voices_to_clone/audio_cf_10_seconds.wav
-|   |   
-│   └── output/
-│       ├── audio/
-│       └── text/
-│
+│   └── input/
+│       └── audio/
+|           ├── speech_to_transcribe/
+│           └── voices_to_clone/
+├── img/
 ├── notebooks/
-│   ├── 01_jhana_testing.ipynb
-|   └── 02_jhana_pipeline.ipynb
-|
+├── src/
+├── .gitattributes
+├── .gitignore
 ├── README.md
 └── requirements.txt
 ```
@@ -95,6 +93,6 @@ jhana_ai/
 
 ### Getting Started
 
-To run the basic pipeline, run the `02_pipeline.py` Jupyter notebook in `notebooks`.
+To run the basic `STT -> LLM -> TTS` pipeline, run the `02_pipeline.py` Jupyter notebook in `notebooks`.
 
 Please note the `src/main.py` file runs too slowly at the moment.
