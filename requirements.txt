@@ -1,8 +1,8 @@
-sounddevice
-scipy
-whisper
-ollama
-torch
-TTS
-numpy
-IPython
+numpy==1.26.4
+ollama==0.1.6
+openai_whisper==20231117
+scipy==1.12.0
+sounddevice==0.4.6
+torch==2.2.0
+torchaudio==2.2.0
+TTS==0.22.0
