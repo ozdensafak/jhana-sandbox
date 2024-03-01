@@ -71,7 +71,6 @@ ollama run mixtral:8x7b-instruct-v0.1-q4_0
 ├── data/
 │   └── input/
 │       └── audio/
-|           ├── speech_to_transcribe/
 │           └── voices_to_clone/
 ├── img/
 ├── notebooks/
