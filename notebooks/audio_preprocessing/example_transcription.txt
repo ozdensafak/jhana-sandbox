@@ -1,0 +1,9 @@
+ This is a long example. In this case, in this example, I will keep silent for 5 seconds.
+silence: 6.0
+ Now I'm going to talk for 10 seconds and then I will keep silent for 3 seconds.
+silence: 4.0
+ Next, I think I couldn't count the seconds. Okay, now I will keep silent just for two seconds.
+silence: 2.0
+ Now I could count seconds. Okay, let me try some small talking without any meaning for 5 seconds.
+silence: 2.0
+ ba ba ba ba ba ba ba ba ba ba ba ba ba baa ah
